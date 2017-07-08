@@ -17,6 +17,8 @@ fi
 if [ -z "$MEMORY" ]; then
 	echo "Using default memory value (256)"
 	MEMORY=256
+else
+	echo "Using $MEMORY memory"
 fi
 
 # get the IP and Gateway
