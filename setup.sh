@@ -17,7 +17,7 @@ else
 fi
 
 # check memory value
-if [ -z "$3" ]; then
+if [ -n "$3" ]; then
 	MEMORY=$3
 fi
 
