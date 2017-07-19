@@ -74,8 +74,8 @@ EOF
 chmod 755 $TMPMNT/etc/rc.local
 
 # patch ld.so.preload depending on qemu version
-QVMAJOR=$( qemu-system-arm --version | grep -Eo "[0-9]\.[0-9]\.[0-9]" | grep -Eo "^[0-9]" )
-QVMINOR=$( qemu-system-arm --version | grep -Eo "\.[0-9]\." | grep -Eo "[0-9]" )
+QVMAJOR=$( qemu-system-arm --version | grep -Eo "version [0-9]\.[0-9]\.[0-9]" | grep -Eo " [0-9]" )
+QVMINOR=$( qemu-system-arm --version | grep -Eo "version [0-9]\.[0-9]\.[0-9]" | grep -Eo "\.[0-9]\." | grep -Eo "[0-9]" )
 
 if [[ $QVMAJOR -eq 2 ]] && [[ $QVMINOR -lt 8 ]]; then
 	sed -i '/^[^#].*libarmmem.so/s/^\(.*\)$/#\1/' $TMPMNT/etc/ld.so.preload
