@@ -5,6 +5,14 @@ IMAGEVERSION=v0.1
 GRAPHICS='-e DISPLAY=:0 -v /tmp/.X11-unix:/tmp/.X11-unix -e GRAPHICSOPTIONS='
 CMD='/opt/scripts/run.sh'
 
+usage(){
+	echo "setup.sh KERNEL IMAGE [MEMORY] [GRAPHIC OPTIONS] [COMMAND]"
+	echo
+	echo "ie: "
+	echo "./setup.sh kernel-qemu-4.4.34 raspbian.img 256 -nographic /bin/bash"
+	echo
+}
+
 # Parse kernel and image path
 if [ -f "$1" -a -f "$2" ]; then
 	KERNELFILE=$(basename $1)
@@ -14,7 +22,7 @@ if [ -f "$1" -a -f "$2" ]; then
 	IMAGEPATH=$(dirname $2)
 	IMAGE=/opt/raspberry/images/$IMAGEFILE
 else
-	echo "IMAGE or KERNEL file not found"
+	usage
 	exit -1
 fi
 
