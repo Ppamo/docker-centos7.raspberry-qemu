@@ -10,10 +10,4 @@ RUN yum -y --setopt=tsflags=nodocs update && \
 	yum -y install qemu-system-arm net-tools bridge-utils && \
 	yum clean all
 
-COPY run.sh /opt/
-COPY qemu-ifup.sh /etc/
-RUN chmod 750 /etc/qemu-ifup.sh && \
-	chown root:kvm /etc/qemu-ifup.sh
-
 EXPOSE 22
-CMD ["/bin/bash", "/opt/run.sh"]

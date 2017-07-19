@@ -2,6 +2,8 @@
 IMAGENAME=centos7-qemu
 IMAGETAG=latest
 IMAGEVERSION=v0.1
+GRAPHICS='-e DISPLAY=:0 -v /tmp/.X11-unix:/tmp/.X11-unix -e GRAPHICSOPTIONS='
+CMD='/opt/scripts/run.sh'
 
 # Parse kernel and image path
 if [ -f "$1" -a -f "$2" ]; then
@@ -17,9 +19,14 @@ else
 fi
 
 # check memory value
-if [ -n "$3" ]; then
-	MEMORY=$3
+if [ -n "$3" ]; then MEMORY="-e MEMORY=$3"; fi
+# check graph mode
+if [ -n "$4" ]; then
+	GRAPHICS="-e GRAPHICSOPTIONS=$4"
 fi
+# check command
+if [ -n "$5" ]; then CMD="$5"; fi
+
 
 # check if docker is running
 docker info > /dev/null 2>&1
@@ -56,7 +63,7 @@ fi
 if [ -d $IMAGEPATH ]; then
 	chcon -Rt svirt_sandbox_file_t $IMAGEPATH
 fi
-
+chcon -Rt svirt_sandbox_file_t scripts
 
 # run a container from $IMAGENAME image
-docker run --privileged=true -di -P -v $KERNELPATH:/opt/raspberry/kernels -v $IMAGEPATH:/opt/raspberry/images -e "KERNEL=$KERNEL" -e "IMAGE=$IMAGE" -e "MEMORY=$MEMORY" "$IMAGENAME:$IMAGETAG"
+docker run --privileged=true -di -P -v $PWD/scripts:/opt/scripts -v $KERNELPATH:/opt/raspberry/kernels -v $IMAGEPATH:/opt/raspberry/images -e "KERNEL=$KERNEL" -e "IMAGE=$IMAGE" $MEMORY $GRAPHICS "$IMAGENAME:$IMAGETAG" $CMD
