@@ -9,10 +9,12 @@ Also need a raspberry image.
 
 
 ### Usage
-bash setup.sh *KERNEL_PATH* *IMAGE_PATH* *[MEMORY]*
+bash setup.sh *KERNEL_PATH* *IMAGE_PATH* *[MEMORY]* *[GRAPHICS OPTIONS]* *[COMMAND]*
 * *KERNEL_PATH*: full path to the kernel to load.
 * *IMAGE_PATH*: full path to the image to load.
 * *MEMORY*: number in megabytes to assign as memory to the emulated machine.   __Note: some machines failed to boot,  when more than 256M of memory were assigned.__
+* *GRAPHICS OPTIONS*: Graphical options to be sent directly to qemu. ie "-nographic"
+* *COMMAND*: Command to be executed by the Container, by default is "/bin/bash scripts/run.sh", but can be set to __/bin/bash__ to debug the scripts.
 
 After execute the script you can access the container's logs to check if the image have complete the boot process and is ready to accept ssh connections through the container's mapped 22 port, or directally from the container's IP.
 
@@ -129,10 +131,13 @@ Then it copy the run.sh script to /opt and qemu-ifup.sh to /etc.
 Finally exposes the 22 port and set the init command to run the "run.sh" script.
 
 #### run.sh
-The script uses 3 environment variables to start the emulator:
+The script uses this environment variables to start the emulator:
 * KERNEL: Required, describes the path in the container, to the kernel file.
 * IMAGE: Required, describes the path in the container, to the image file.
 * MEMORY: Optional, the megabytes of memory assigned to the emulated machine, the default value is __256__.   ***Note: some test images failed to boot on machines with more than 256M***
+* GRAPHICSOPTIONS: Graphical options to be sent to qemu, default value is:
+```-e DISPLAY=:0 -v /tmp/.X11-unix:/tmp/.X11-unix -e GRAPHICSOPTIONS=```
+this allow qemu to connect to host's display.   It can be set to "-nographic" to disable qemu's graphical mode.
 
 Before boot the image it should be setted up, so the script searchs for the Linux and FAT32 partitions.
 
