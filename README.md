@@ -14,7 +14,7 @@ bash setup.sh *KERNEL_PATH* *IMAGE_PATH* *[MEMORY]* *[GRAPHICS OPTIONS]* *[COMMA
 * *IMAGE_PATH*: full path to the image to load.
 * *MEMORY*: number in megabytes to assign as memory to the emulated machine.   __Note: some machines failed to boot,  when more than 256M of memory were assigned.__
 * *GRAPHICS OPTIONS*: Graphical options to be sent directly to qemu. ie "-nographic"
-* *COMMAND*: Command to be executed by the Container, by default is "/bin/bash scripts/run.sh", but can be set to __/bin/bash__ to debug the scripts.
+* *COMMAND*: Command to be executed in the container, default value is "/bin/bash scripts/run.sh", but can be set to __/bin/bash__ for debugging purposes.
 
 After execute the script you can access the container's logs to check if the image have complete the boot process and is ready to accept ssh connections through the container's mapped 22 port, or directally from the container's IP.
 
